@@ -5,11 +5,20 @@
 #define PWD_RATE 0.20
 #define MINOR_RATE 0.05
 
+void display();
+
 int main() {
+    display();
+    return 0;
+}
+
+void display() {
     char con;
-    int ans, product;
+    int ans;
     float tAm, tPay, discAm;
-    int Price[] = {10, 15, 40, 12, 32, 20, 8, 15, 3, 40}; // Array of product prices
+    int product;
+    int Price[] = {10, 15, 40, 12, 32, 20, 8, 15, 3, 40};
+    int Total_Balance = 0;
 
     do {
         printf("\t\t\t       ===============================================");
@@ -18,15 +27,15 @@ int main() {
 
         printf("\n\t\t=================================Products============================   \n\n");
         printf("\t\t  [1] Egg                                10     \n");
-	printf("\t\t  [2] Shampoo                            15     \n");
-	printf("\t\t  [3] Soap                               40     \n");
-	printf("\t\t  [4] Pancit Canton                      12     \n");
-	printf("\t\t  [5] Beef Loaf                          32     \n");
-	printf("\t\t  [6] Chocolate                          20     \n");
-	printf("\t\t  [7] Bear Brand Milk                    8      \n");
-	printf("\t\t  [8] 3 n 1 Coffee                       15     \n");
-	printf("\t\t  [9] Barnuts                            3      \n");
-	printf("\t\t  [10] Softdrinks (1 Liter)              40     \n");
+        printf("\t\t  [2] Shampoo                            15     \n");
+        printf("\t\t  [3] Soap                               40     \n");
+        printf("\t\t  [4] Pancit Canton                      12     \n");
+        printf("\t\t  [5] Beef Loaf                          32     \n");
+        printf("\t\t  [6] Chocolate                          20     \n");
+        printf("\t\t  [7] Bear Brand Milk                    8      \n");
+        printf("\t\t  [8] 3 n 1 Coffee                       15     \n");
+        printf("\t\t  [9] Barnuts                            3      \n");
+        printf("\t\t  [10] Softdrinks (1 Liter)              40     \n");
         printf("\t\t=========================================================================");
         printf("\n\t\t========================================================================\n");
 
@@ -36,22 +45,21 @@ int main() {
         // Validate the product choice
         if (product < 1 || product > 10) {
             printf("Invalid product choice. Please select a valid product.\n");
-            continue; // Continue the loop if the product choice is invalid
+            display(); // Continue the loop if the product choice is invalid
+        } else {
+            printf("\n\t\tQuantity: ");
+            int qty;
+            scanf("%d", &qty);
+
+            // Calculate Total Amount for the selected product
+            int Total_Amount = qty * Price[product - 1];
+
+            printf("\n\t\tTotal Amount: %d", Total_Amount);
+
+            // Add the Total_Amount to Total_Balance
+            Total_Balance += Total_Amount;
+            printf("\n\t\tTotal Balance: %d", Total_Balance);
         }
-
-        printf("\n\t\tQuantity: ");
-        int qty;
-        scanf("%d", &qty);
-
-        // Calculate Total Amount for the selected product
-        int Total_Amount = qty * Price[product - 1];
-
-        printf("\n\t\tTotal Amount: %d", Total_Amount);
-
-        // Calculate Total Balance
-        float Total_Balance = 0; // Initialize the Total_Balance variable
-        Total_Balance += Total_Amount;
-        printf("\n\t\tTotal Balance: %.2f", Total_Balance);
 
         printf("\n\n\t\tPress [Y] to add another product? ");
         scanf(" %c", &con);
@@ -61,7 +69,9 @@ int main() {
     do {
         printf("\n\n\t\t\t\t\t    ** PLEASE CHOOSE: **\n");
         printf("\t\t\t       ===============================================");
-        printf("\n\t\t [1] - STUDENT\t\t\t[3] - PWD\t\t\t[0] - QUIT\n\t\t\t    [2] - SENIOR CITIZEN\t\t [4] - MINOR\n\n");
+        printf("\n\t\t [1] - STUDENT\t\t\t[2] - SENIOR CITIZEN\t\t\t[3] - PWD\t\t\t[4] - MINOR\n");
+        printf("\t\t\t       ===============================================\n");
+        printf("\t\t\t\t\t\t\t[0] - QUIT\n");
         printf("\t\t\t\t\t  Choose from above (0-4): ");
         scanf("%d", &ans);
 
@@ -71,39 +81,33 @@ int main() {
     } while (ans > 4 || ans < 0);
 
     if (ans != 0) {
-        printf("\t\t\t\t\t Enter total amount purchased: ");
-        scanf("%f", &tAm);
+        // Directly display the total amount without taking user input
+        printf("\t\t\t\t\t Total Amount: %d", Total_Balance);
 
         switch (ans) {
             case 1:
-                discAm = tAm * STUDENT_RATE;
+                discAm = Total_Balance * STUDENT_RATE;
                 break;
             case 2:
-                discAm = tAm * SENIOR_RATE;
+                discAm = Total_Balance * SENIOR_RATE;
                 break;
             case 3:
-                discAm = tAm * PWD_RATE;
+                discAm = Total_Balance * PWD_RATE;
                 break;
             case 4:
-                discAm = tAm * MINOR_RATE;
+                discAm = Total_Balance * MINOR_RATE;
                 break;
             default:
                 break;
         }
 
-        tPay = tAm - discAm;
+        tPay = Total_Balance - discAm;
 
-        printf("\t\t\t\t\tTotal Discount of the Customer: %.2f\n", discAm);
+        printf("\n\t\t\t\t\tTotal Discount of the Customer: %.2f\n", discAm);
         printf("\t\t\t\t\t  TOTAL AMOUNT TO BE PAID: %.2f\n", tPay);
-
-        printf("\t\t\t\t\t  Another Customer? (Y/N): ");
-        scanf(" %c", &con);
-        printf("\n\n");
     }
 
     printf("\t\t\t       ===============================================");
     printf("\n\t\t\t\t\tGOODBYE!!! Please come again. :)\n");
     printf("\t\t\t       ===============================================");
-
-    return 0;
 }
